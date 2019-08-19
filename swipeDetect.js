@@ -1,9 +1,8 @@
 class SwipeDetect {
     /**
-     * @param {HTMLElement} element
      * @param {Object} params
      */
-    constructor(element, params) {
+    constructor(params) {
         /**
          * Constants
          * @public
@@ -69,11 +68,6 @@ class SwipeDetect {
         this.pixelOffsetX = 0;
         this.pixelOffsetY = 0;
         /**
-         * Target element which should detect swipes
-         * @property {HTMLElement} element
-         */
-        this.element = element;
-        /**
          * Target element which should detect end of swipes
          * @property {HTMLElement} html
          */
@@ -82,7 +76,7 @@ class SwipeDetect {
          * Settings object merged with defauls
          * @property {Object} settings
          */
-        this.settings = Utils.mergeObjects(defaults, params);
+        this.settings = this._mergeObjects(defaults, params);
 
         this._swipeStart = this._swipeStart.bind(this);
         this._swiping = this._swiping.bind(this);
@@ -99,11 +93,11 @@ class SwipeDetect {
         const t = this;
 
         this.EVENTS_START.forEach((event) => {
-            t.element.addEventListener(event, t._swipeStart, false);
+            document.querySelector('body').addEventListener(event, t._swipeStart, false);
         });
 
         this.EVENTS_MOVE.forEach((event) => {
-            t.html.addEventListener(event, t._swiping, false);
+            document.querySelector('body').addEventListener(event, t._swiping, false);
         });
     }
     /**
@@ -142,22 +136,22 @@ class SwipeDetect {
                 && Math.abs(this.pixelOffsetX) >= this.settings.swipeThreshold
             ) { // Horizontal Swipe
                 if (this.pixelOffsetX < 0) {
-                    this.element.dispatchEvent(new Event('swipeLeft.amo'));
+                    event.target.dispatchEvent(new Event('swipeLeft.sd', {'bubbles':true, 'cancelable':true}));
                 } else {
-                    this.element.dispatchEvent(new Event('swipeRight.amo'));
+                    event.target.dispatchEvent(new Event('swipeRight.sd', {'bubbles':true, 'cancelable':true}));
                 }
             } else if (
                 this.settings.verticalSwipe &&
                 (Math.abs(this.pixelOffsetY) >= this.settings.swipeThreshold)
             ) { // Vertical swipe
                 if (this.pixelOffsetY < 0) {
-                    this.element.dispatchEvent(new Event('swipeUp.amo'));
+                    event.target.dispatchEvent(new Event('swipeUp.sd', {'bubbles':true, 'cancelable':true}));
                 } else {
-                    this.element.dispatchEvent(new Event('swipeDown.amo'));
+                    event.target.dispatchEvent(new Event('swipeDown.sd', {'bubbles':true, 'cancelable':true}));
 
                 }
             }
-            this.settings.onAfterSwipe.call(this, this.element);
+            this.settings.onAfterSwipe.call(this, event.target);
             this.settings.removeListenersAfterSwipe && this._removeListeners();
         }
     }
@@ -198,11 +192,36 @@ class SwipeDetect {
         const t = this;
 
         this.EVENTS_START.forEach((event) => {
-            t.element.removeEventListener(event, t._swipeStart, false);
+            document.querySelector('body').removeEventListener(event, t._swipeStart, false);
         });
 
         this.EVENTS_MOVE.forEach((event) => {
-            t.html.removeEventListener(event, t._swiping, false);
+           document.querySelector('body').removeEventListener(event, t._swiping, false);
         });
+    }
+    /**
+     * Merge objects
+     * @private
+     * @return {Object}
+     */
+    _mergeObjects(obj1, obj2){
+        let result = {};
+
+        for (let attribute in obj1) {
+            result[attribute] = obj1[attribute];
+        }
+
+        for (let attribute in obj2) {
+            if (result.hasOwnProperty(attribute) && typeof result[attribute] === "object"
+                && obj2.hasOwnProperty(attribute) && typeof obj2[attribute] === "object"
+                && Object.prototype.toString.call(result[attribute]) !== '[object Array]'
+            ) {
+                result[attribute] = this.mergeObjects(result[attribute], obj2[attribute]);
+            } else {
+                result[attribute] = obj2[attribute];
+            }
+        }
+
+        return result;
     }
 }
