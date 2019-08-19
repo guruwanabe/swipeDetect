@@ -9,7 +9,6 @@ class SwipeDetect {
          */
         this.EVENTS_START = ['mousedown', 'touchstart'];
         this.EVENTS_MOVE = ['mousemove', 'touchmove'];
-        this.EVENTS_END = ['mouseup', 'touchend'];
 
         const defaults = {
             /**
@@ -67,11 +66,6 @@ class SwipeDetect {
          */
         this.pixelOffsetX = 0;
         this.pixelOffsetY = 0;
-        /**
-         * Target element which should detect end of swipes
-         * @property {HTMLElement} html
-         */
-        this.html = document.querySelector('html');
         /**
          * Settings object merged with defauls
          * @property {Object} settings
