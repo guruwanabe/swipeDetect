@@ -116,7 +116,7 @@ class SwipeDetect {
         }
 
         if (this.swipeState === 0) {
-            this.settings.onBeforeSwipe.call(this, this.element);
+            this.settings.onBeforeSwipe.call(this, event.target);
             this.swipeState = 1;
             this.startX = event.clientX;
             this.startY = event.clientY;
