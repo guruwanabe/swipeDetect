@@ -33,9 +33,9 @@ QUnit.test("swipeRight", function (assert) {
     const done = assert.async();
 
     //Given
-    this.element.addEventListener("swipeRight.amo", function (e) {
+    this.element.addEventListener("swipeRight.sd", function (e) {
         //Then
-        assert.ok(e.type, 'swipeRight.amo');
+        assert.ok(e.type, 'swipeRight.sd');
         done();
     }, false);
 
@@ -47,9 +47,9 @@ QUnit.test("swipeLeft", function (assert) {
     assert.expect(1);
     const done = assert.async();
     //Given
-    this.element.addEventListener("swipeLeft.amo", function (e) {
+    this.element.addEventListener("swipeLeft.sd", function (e) {
         //Then
-        assert.ok(e.type, 'swipeLeft.amo');
+        assert.ok(e.type, 'swipeLeft.sd');
         done();
     }, false);
 
@@ -63,9 +63,9 @@ QUnit.test("swipeUp", function (assert) {
 
     //Given
     this.swipeDetect.settings.verticalSwipe = true;
-    this.element.addEventListener("swipeUp.amo", function (e) {
+    this.element.addEventListener("swipeUp.sd", function (e) {
         //Then
-        assert.ok(e.type, 'swipeUp.amo');
+        assert.ok(e.type, 'swipeUp.sd');
         done();
     }, false);
 
@@ -79,9 +79,9 @@ QUnit.test("swipeDown", function (assert) {
 
     //Given
     this.swipeDetect.settings.verticalSwipe = true;
-    this.element.addEventListener("swipeDown.amo", function (e) {
+    this.element.addEventListener("swipeDown.sd", function (e) {
         //Then
-        assert.ok(e.type, 'swipeDown.amo');
+        assert.ok(e.type, 'swipeDown.sd');
         done();
     }, false);
 
@@ -97,8 +97,8 @@ QUnit.test("onBeforeSwipe", function (assert) {
     this.swipeDetect.settings.onBeforeSwipe = function (element) {
         element.classList.add('onBeforeSwipe');
     };
-
-    this.element.addEventListener("swipeLeft.amo", function (e) {
+    
+    this.element.addEventListener("swipeLeft.sd", function (e) {
         //Then
         assert.ok(e.target.classList.contains('onBeforeSwipe'), true);
         done();
@@ -117,7 +117,7 @@ QUnit.test("onAfterSwipe", function (assert) {
         element.classList.add('onAfterSwipe');
     };
 
-    this.element.addEventListener("swipeLeft.amo", function (e) {
+    this.element.addEventListener("swipeLeft.sd", function (e) {
         //Then
         setTimeout(function () {
             assert.ok(e.target.classList.contains('onAfterSwipe'), true);
