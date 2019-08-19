@@ -14,8 +14,8 @@ function mouseMove(element, fromX, fromY, toX, toY){
         clientY: toY
     });
 
-    element.dispatchEvent(eventStart);
-    document.querySelector('html').dispatchEvent(eventEnd);
+    document.querySelector('body').dispatchEvent(eventStart);
+    document.querySelector('body').dispatchEvent(eventEnd);
 }
 
 QUnit.module("swipeDetect.js",{
@@ -23,7 +23,7 @@ QUnit.module("swipeDetect.js",{
             this.container = $('#qunit-fixture');
             this.container.after('<div id="testDiv" style="height: 1000px;"></div>');
             this.element = document.querySelector('#testDiv');
-            this.swipeDetect = new SwipeDetect(this.element);
+            this.swipeDetect = new SwipeDetect();
         }
     }
 );
